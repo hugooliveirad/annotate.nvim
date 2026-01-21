@@ -37,7 +37,8 @@ function M.setup()
     elseif subcmd == "prev" then
       api.prev_annotation()
     elseif subcmd == "help" then
-      vim.notify([[
+      vim.notify(
+        [[
 Annotate commands:
   :Annotate add       - Add annotation on current line
   :Annotate list      - Open Trouble list (default)
@@ -54,7 +55,9 @@ Annotate commands:
   :Annotate help      - Show this help
 
 Visual mode: Select lines and use <leader>ra to add annotation
-]], vim.log.levels.INFO)
+]],
+        vim.log.levels.INFO
+      )
     else
       vim.notify("Unknown subcommand: " .. subcmd .. ". Use :Annotate help", vim.log.levels.WARN)
     end
@@ -88,8 +91,16 @@ Visual mode: Select lines and use <leader>ra to add annotation
   end, { desc = "Add annotation on current line" })
 
   vim.api.nvim_create_user_command("AnnotateList", api.open_list, { desc = "List annotations in Trouble" })
-  vim.api.nvim_create_user_command("AnnotateTelescope", api.open_telescope, { desc = "Search annotations with Telescope" })
-  vim.api.nvim_create_user_command("AnnotateDelete", api.delete_under_cursor, { desc = "Delete annotation under cursor" })
+  vim.api.nvim_create_user_command(
+    "AnnotateTelescope",
+    api.open_telescope,
+    { desc = "Search annotations with Telescope" }
+  )
+  vim.api.nvim_create_user_command(
+    "AnnotateDelete",
+    api.delete_under_cursor,
+    { desc = "Delete annotation under cursor" }
+  )
   vim.api.nvim_create_user_command("AnnotateEdit", api.edit_under_cursor, { desc = "Edit annotation under cursor" })
 end
 

@@ -2,8 +2,8 @@
 
 local config = require("annotate.config")
 local core = require("annotate.core")
-local render = require("annotate.render")
 local persistence = require("annotate.persistence")
+local render = require("annotate.render")
 
 local M = {}
 
