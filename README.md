@@ -78,14 +78,12 @@ https://github.com/user-attachments/assets/d6a69abc-c822-4e5d-8935-6de3bae867d7
 
 ## Configuration
 
-**Note:** Keymaps are NOT set by default. Call `require('annotate').set_keymaps()` after setup to enable them, or define your own in your plugin manager config.
-
 <details>
 <summary>Default configuration</summary>
 
 ```lua
 {
-  -- Keymaps used by set_keymaps() - NOT applied by default
+  -- Keymaps used by set_keymaps()
   keymaps = {
     add = "<leader>aa",           -- Visual mode: add annotation
     list = "<leader>al",          -- Open Trouble list
@@ -155,9 +153,9 @@ https://github.com/user-attachments/assets/d6a69abc-c822-4e5d-8935-6de3bae867d7
 
 Shortcuts: `:AnnotateAdd`, `:AnnotateList`, `:AnnotateTelescope`, `:AnnotateDelete`, `:AnnotateEdit`
 
-### Keymaps
+### Suggested Keymaps
 
-**Note:** Keymaps are NOT set by default. Enable them with `require('annotate').set_keymaps()`.
+Enable default keymaps with `require('annotate').set_keymaps()`.
 
 | Key | Mode | Action |
 |-----|------|--------|
