@@ -30,16 +30,44 @@ Code review annotations with virtual text display for Neovim.
 
 ### [lazy.nvim](https://github.com/folke/lazy.nvim)
 
+**Basic setup (no keymaps):**
+
+```lua
+{
+  "hugooliveirad/annotate.nvim",
+  opts = {},
+  cmd = { "Annotate", "AnnotateAdd", "AnnotateList" },
+}
+```
+
+**With default keymaps:**
+
+```lua
+{
+  "hugooliveirad/annotate.nvim",
+  opts = {},
+  config = function(_, opts)
+    require("annotate").setup(opts)
+    require("annotate").set_keymaps()  -- Enable default keymaps
+  end,
+  cmd = { "Annotate", "AnnotateAdd", "AnnotateList" },
+}
+```
+
+**With lazy.nvim keys (recommended for lazy-loading):**
+
 ```lua
 {
   "hugooliveirad/annotate.nvim",
   opts = {},
   keys = {
-    { "<leader>ra", mode = "v", desc = "Add annotation" },
-    { "<leader>rl", desc = "List annotations" },
-    { "<leader>rs", desc = "Search annotations (Telescope)" },
-    { "]r", desc = "Next annotation" },
-    { "[r", desc = "Previous annotation" },
+    { "<leader>aa", mode = "v", function() require("annotate").add_visual() end, desc = "Add annotation" },
+    { "<leader>al", function() require("annotate").open_list() end, desc = "List annotations" },
+    { "<leader>as", function() require("annotate").open_telescope() end, desc = "Search annotations (Telescope)" },
+    { "<leader>ad", function() require("annotate").delete_under_cursor() end, desc = "Delete annotation" },
+    { "<leader>ae", function() require("annotate").edit_under_cursor() end, desc = "Edit annotation" },
+    { "]a", function() require("annotate").next_annotation() end, desc = "Next annotation" },
+    { "[a", function() require("annotate").prev_annotation() end, desc = "Previous annotation" },
   },
   cmd = { "Annotate", "AnnotateAdd", "AnnotateList" },
 }
@@ -47,25 +75,28 @@ Code review annotations with virtual text display for Neovim.
 
 ## Configuration
 
+**Note:** Keymaps are NOT set by default. Call `require('annotate').set_keymaps()` after setup to enable them, or define your own in your plugin manager config.
+
 <details>
 <summary>Default configuration</summary>
 
 ```lua
 {
+  -- Keymaps used by set_keymaps() - NOT applied by default
   keymaps = {
-    add = "<leader>ra",           -- Visual mode: add annotation
-    list = "<leader>rl",          -- Open Trouble list
-    telescope = "<leader>rs",     -- Open Telescope picker
-    yank = "<leader>ry",          -- Yank all annotations to clipboard
-    delete = "<leader>rd",        -- Delete annotation under cursor
-    edit = "<leader>re",          -- Edit annotation under cursor
-    delete_all = "<leader>rD",    -- Delete all annotations
-    undo = "<leader>ru",          -- Undo last delete
-    redo = "<leader>rU",          -- Redo last undo
-    write = "<leader>rw",         -- Export to markdown file
-    import = "<leader>ri",        -- Import from markdown file
-    next_annotation = "]r",       -- Jump to next annotation
-    prev_annotation = "[r",       -- Jump to previous annotation
+    add = "<leader>aa",           -- Visual mode: add annotation
+    list = "<leader>al",          -- Open Trouble list
+    telescope = "<leader>as",     -- Open Telescope picker
+    yank = "<leader>ay",          -- Yank all annotations to clipboard
+    delete = "<leader>ad",        -- Delete annotation under cursor
+    edit = "<leader>ae",          -- Edit annotation under cursor
+    delete_all = "<leader>aD",    -- Delete all annotations
+    undo = "<leader>au",          -- Undo last delete
+    redo = "<leader>aU",          -- Redo last undo
+    write = "<leader>aw",         -- Export to markdown file
+    import = "<leader>ai",        -- Import from markdown file
+    next_annotation = "]a",       -- Jump to next annotation
+    prev_annotation = "[a",       -- Jump to previous annotation
   },
   virtual_text = {
     wrap_at = 80,                 -- Wrap long comments (0 to disable)
@@ -96,7 +127,7 @@ Code review annotations with virtual text display for Neovim.
 ### Adding Annotations
 
 1. Visual select the lines you want to annotate
-2. Press `<leader>ra`
+2. Press `<leader>aa` (or your configured keymap)
 3. Type your annotation comment
 4. Press `Enter` to save
 
@@ -123,21 +154,23 @@ Shortcuts: `:AnnotateAdd`, `:AnnotateList`, `:AnnotateTelescope`, `:AnnotateDele
 
 ### Keymaps
 
+**Note:** Keymaps are NOT set by default. Enable them with `require('annotate').set_keymaps()`.
+
 | Key | Mode | Action |
 |-----|------|--------|
-| `<leader>ra` | v | Add annotation to selection |
-| `<leader>rl` | n | Open annotation list |
-| `<leader>rs` | n | Search with Telescope |
-| `<leader>ry` | n | Yank all to clipboard |
-| `<leader>rd` | n | Delete under cursor |
-| `<leader>re` | n | Edit under cursor |
-| `<leader>rD` | n | Delete all |
-| `<leader>ru` | n | Undo delete |
-| `<leader>rU` | n | Redo delete |
-| `<leader>rw` | n | Export to file |
-| `<leader>ri` | n | Import from file |
-| `]r` | n | Next annotation |
-| `[r` | n | Previous annotation |
+| `<leader>aa` | v | Add annotation to selection |
+| `<leader>al` | n | Open annotation list |
+| `<leader>as` | n | Search with Telescope |
+| `<leader>ay` | n | Yank all to clipboard |
+| `<leader>ad` | n | Delete under cursor |
+| `<leader>ae` | n | Edit under cursor |
+| `<leader>aD` | n | Delete all |
+| `<leader>au` | n | Undo delete |
+| `<leader>aU` | n | Redo delete |
+| `<leader>aw` | n | Export to file |
+| `<leader>ai` | n | Import from file |
+| `]a` | n | Next annotation |
+| `[a` | n | Previous annotation |
 
 ### Telescope Actions
 

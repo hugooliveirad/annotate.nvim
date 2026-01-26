@@ -733,4 +733,18 @@ function M.open_telescope()
   M.telescope_picker(require("telescope.themes").get_dropdown({}))
 end
 
+-- ============================================================================
+-- Keymap Setup
+-- ============================================================================
+
+---Enable default keymaps
+---Call this function to set up all default keymaps.
+---Keymaps are NOT set automatically - you must call this explicitly.
+---@example
+---  require('annotate').setup({})
+---  require('annotate').set_keymaps()
+function M.set_keymaps()
+  require("annotate.config").setup_keymaps()
+end
+
 return M

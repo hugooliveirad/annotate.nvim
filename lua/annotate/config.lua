@@ -46,19 +46,19 @@ local M = {}
 ---@type annotate.Config
 local defaults = {
   keymaps = {
-    add = "<leader>ra",
-    list = "<leader>rl",
-    telescope = "<leader>rs",
-    yank = "<leader>ry",
-    delete = "<leader>rd",
-    edit = "<leader>re",
-    delete_all = "<leader>rD",
-    undo = "<leader>ru",
-    redo = "<leader>rU",
-    write = "<leader>rw",
-    import = "<leader>ri",
-    next_annotation = "]r",
-    prev_annotation = "[r",
+    add = "<leader>aa",
+    list = "<leader>al",
+    telescope = "<leader>as",
+    yank = "<leader>ay",
+    delete = "<leader>ad",
+    edit = "<leader>ae",
+    delete_all = "<leader>aD",
+    undo = "<leader>au",
+    redo = "<leader>aU",
+    write = "<leader>aw",
+    import = "<leader>ai",
+    next_annotation = "]a",
+    prev_annotation = "[a",
   },
   virtual_text = {
     wrap_at = 80,
@@ -95,7 +95,7 @@ function M.setup(opts)
 
   options = vim.tbl_deep_extend("force", {}, defaults, opts or {})
   M.setup_highlights()
-  M.setup_keymaps()
+  -- Note: keymaps are NOT set by default. Call require('annotate').set_keymaps() to enable.
 end
 
 ---Get configuration
@@ -115,53 +115,53 @@ function M.setup_highlights()
   vim.api.nvim_set_hl(0, "AnnotateLineDrifted", { bg = "#4d2626", default = true })
 end
 
----Setup keymaps
+---Setup keymaps (call require('annotate').set_keymaps() to enable)
 function M.setup_keymaps()
   local api = require("annotate.api")
   local km = options.keymaps
 
   if km.add then
-    vim.keymap.set("v", km.add, api.add_visual, { desc = "[R]eview: [A]dd annotation" })
+    vim.keymap.set("v", km.add, api.add_visual, { desc = "[A]nnotate: [A]dd annotation" })
   end
 
   if km.list then
-    vim.keymap.set("n", km.list, api.open_list, { desc = "[R]eview: [L]ist annotations" })
+    vim.keymap.set("n", km.list, api.open_list, { desc = "[A]nnotate: [L]ist annotations" })
   end
 
   if km.telescope then
-    vim.keymap.set("n", km.telescope, api.open_telescope, { desc = "[R]eview: [S]earch annotations (telescope)" })
+    vim.keymap.set("n", km.telescope, api.open_telescope, { desc = "[A]nnotate: [S]earch annotations (telescope)" })
   end
 
   if km.yank then
-    vim.keymap.set("n", km.yank, api.yank_all, { desc = "[R]eview: [Y]ank all annotations" })
+    vim.keymap.set("n", km.yank, api.yank_all, { desc = "[A]nnotate: [Y]ank all annotations" })
   end
 
   if km.delete then
-    vim.keymap.set("n", km.delete, api.delete_under_cursor, { desc = "[R]eview: [D]elete annotation" })
+    vim.keymap.set("n", km.delete, api.delete_under_cursor, { desc = "[A]nnotate: [D]elete annotation" })
   end
 
   if km.edit then
-    vim.keymap.set("n", km.edit, api.edit_under_cursor, { desc = "[R]eview: [E]dit annotation" })
+    vim.keymap.set("n", km.edit, api.edit_under_cursor, { desc = "[A]nnotate: [E]dit annotation" })
   end
 
   if km.delete_all then
-    vim.keymap.set("n", km.delete_all, api.delete_all, { desc = "[R]eview: [D]elete all annotations" })
+    vim.keymap.set("n", km.delete_all, api.delete_all, { desc = "[A]nnotate: [D]elete all annotations" })
   end
 
   if km.undo then
-    vim.keymap.set("n", km.undo, api.undo_delete, { desc = "[R]eview: [U]ndo delete" })
+    vim.keymap.set("n", km.undo, api.undo_delete, { desc = "[A]nnotate: [U]ndo delete" })
   end
 
   if km.redo then
-    vim.keymap.set("n", km.redo, api.redo_delete, { desc = "[R]eview: Redo delete" })
+    vim.keymap.set("n", km.redo, api.redo_delete, { desc = "[A]nnotate: Redo delete" })
   end
 
   if km.write then
-    vim.keymap.set("n", km.write, api.write_to_file, { desc = "[R]eview: [W]rite to file" })
+    vim.keymap.set("n", km.write, api.write_to_file, { desc = "[A]nnotate: [W]rite to file" })
   end
 
   if km.import then
-    vim.keymap.set("n", km.import, api.import_from_file, { desc = "[R]eview: [I]mport from file" })
+    vim.keymap.set("n", km.import, api.import_from_file, { desc = "[A]nnotate: [I]mport from file" })
   end
 
   if km.next_annotation then

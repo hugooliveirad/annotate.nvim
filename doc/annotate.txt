@@ -42,15 +42,24 @@ Optional:
 ==============================================================================
 INSTALLATION                                            *annotate-installation*
 
-Using lazy.nvim:
+Using lazy.nvim (basic setup, no keymaps):
 >lua
     {
       "hugooliveirad/annotate.nvim",
       opts = {},
-      keys = {
-        { "<leader>ra", mode = "v", desc = "Add annotation" },
-        { "<leader>rl", desc = "List annotations" },
-      },
+      cmd = { "Annotate", "AnnotateAdd", "AnnotateList" },
+    }
+<
+
+With default keymaps enabled:
+>lua
+    {
+      "hugooliveirad/annotate.nvim",
+      opts = {},
+      config = function(_, opts)
+        require("annotate").setup(opts)
+        require("annotate").set_keymaps()  -- Enable default keymaps
+      end,
       cmd = { "Annotate", "AnnotateAdd", "AnnotateList" },
     }
 <
@@ -61,20 +70,21 @@ CONFIGURATION                                          *annotate-configuration*
 Call `setup()` with a table to override defaults:
 >lua
     require("annotate").setup({
+      -- Keymaps used by set_keymaps() - NOT applied by default
       keymaps = {
-        add = "<leader>ra",
-        list = "<leader>rl",
-        telescope = "<leader>rs",
-        yank = "<leader>ry",
-        delete = "<leader>rd",
-        edit = "<leader>re",
-        delete_all = "<leader>rD",
-        undo = "<leader>ru",
-        redo = "<leader>rU",
-        write = "<leader>rw",
-        import = "<leader>ri",
-        next_annotation = "]r",
-        prev_annotation = "[r",
+        add = "<leader>aa",
+        list = "<leader>al",
+        telescope = "<leader>as",
+        yank = "<leader>ay",
+        delete = "<leader>ad",
+        edit = "<leader>ae",
+        delete_all = "<leader>aD",
+        undo = "<leader>au",
+        redo = "<leader>aU",
+        write = "<leader>aw",
+        import = "<leader>ai",
+        next_annotation = "]a",
+        prev_annotation = "[a",
       },
       virtual_text = {
         wrap_at = 80,
@@ -98,7 +108,13 @@ Call `setup()` with a table to override defaults:
     })
 <
 
-Set any keymap to `false` to disable it.
+Note: Keymaps are NOT set by default. Call `set_keymaps()` after setup:
+>lua
+    require("annotate").setup({})
+    require("annotate").set_keymaps()  -- Enable default keymaps
+<
+
+Set any keymap to `false` to disable it when using `set_keymaps()`.
 
 ==============================================================================
 USAGE                                                          *annotate-usage*
@@ -106,15 +122,15 @@ USAGE                                                          *annotate-usage*
 Adding Annotations ~
 
 1. Visual select lines to annotate
-2. Press `<leader>ra` (or configured keymap)
+2. Press `<leader>aa` (or your configured keymap)
 3. Type your annotation
 4. Press Enter to save
 
 Browsing Annotations ~
 
-- Press `<leader>rl` to open Trouble list
-- Press `<leader>rs` to open Telescope picker
-- Use `]r` and `[r` to jump between annotations
+- Press `<leader>al` to open Trouble list
+- Press `<leader>as` to open Telescope picker
+- Use `]a` and `[a` to jump between annotations
 
 Drift Detection ~
 
@@ -160,24 +176,29 @@ COMMANDS                                                    *annotate-commands*
 ==============================================================================
 KEYMAPS                                                      *annotate-keymaps*
 
-Default keymaps (configurable):
+Keymaps are NOT set by default. Call `set_keymaps()` to enable them:
+>lua
+    require("annotate").set_keymaps()
+<
+
+Default keymaps (when enabled via `set_keymaps()`):
 
 Visual mode:
-    <leader>ra      Add annotation to selection
+    <leader>aa      Add annotation to selection
 
 Normal mode:
-    <leader>rl      Open annotation list
-    <leader>rs      Open Telescope picker
-    <leader>ry      Yank all to clipboard
-    <leader>rd      Delete under cursor
-    <leader>re      Edit under cursor
-    <leader>rD      Delete all annotations
-    <leader>ru      Undo delete
-    <leader>rU      Redo delete
-    <leader>rw      Export to file
-    <leader>ri      Import from file
-    ]r              Next annotation
-    [r              Previous annotation
+    <leader>al      Open annotation list
+    <leader>as      Open Telescope picker
+    <leader>ay      Yank all to clipboard
+    <leader>ad      Delete under cursor
+    <leader>ae      Edit under cursor
+    <leader>aD      Delete all annotations
+    <leader>au      Undo delete
+    <leader>aU      Redo delete
+    <leader>aw      Export to file
+    <leader>ai      Import from file
+    ]a              Next annotation
+    [a              Previous annotation
 
 Telescope picker keymaps:
     <CR>            Jump to annotation
@@ -209,6 +230,15 @@ API                                                              *annotate-api*
 
 annotate.setup({opts})                                      *annotate.setup()*
     Setup the plugin with optional configuration.
+    Note: Keymaps are NOT set by default.
+
+annotate.set_keymaps()                                  *annotate.set_keymaps()*
+    Enable the default keymaps. Call this after setup() if you want to use
+    the built-in keymaps. Example:
+>lua
+        require("annotate").setup({})
+        require("annotate").set_keymaps()
+<
 
 annotate.add({start_line}, {end_line})                        *annotate.add()*
     Add an annotation to the specified line range.
