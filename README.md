@@ -9,6 +9,7 @@ Code review annotations with virtual text display for Neovim.
 - **Add annotations** to selected code ranges with visual text display
 - **Drift detection** - highlights when annotated code has changed
 - **Virtual text** displayed below annotated hunks with word-wrap
+- **Copy to clipboard** and use in your coding agent of choice
 - **Sign column** indicators for annotated lines
 - **Line highlighting** with customizable background colors
 - **Trouble.nvim integration** for browsing annotations
@@ -16,6 +17,8 @@ Code review annotations with virtual text display for Neovim.
 - **Persistence** - optionally save/load annotations to JSON
 - **Import/Export** to markdown format
 - **Undo/Redo** support for deletions
+
+https://github.com/user-attachments/assets/d6a69abc-c822-4e5d-8935-6de3bae867d7
 
 ## Requirements
 
