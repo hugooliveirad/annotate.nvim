@@ -8,11 +8,11 @@ local M = {}
 ---@type table<number, Annotation>
 M.annotations = {}
 M.next_id = 1
----@type Annotation[]
+---@type Annotation[][] Each entry is a list of annotations from one operation
 M.undo_stack = {}
----@type Annotation[]
+---@type Annotation[][] Each entry is a list of annotations from one operation
 M.redo_stack = {}
-M.max_undo = 10
+M.max_undo = 1000
 ---@type number|nil
 M.namespace = nil
 

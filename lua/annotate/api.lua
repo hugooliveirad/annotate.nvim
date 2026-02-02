@@ -86,7 +86,7 @@ end
 function M.delete(annotation)
   core.redo_stack = {}
 
-  table.insert(core.undo_stack, annotation)
+  table.insert(core.undo_stack, { annotation })
   if #core.undo_stack > core.max_undo then
     table.remove(core.undo_stack, 1)
   end
@@ -141,18 +141,11 @@ function M.delete_all()
   local annotation_list = {}
   for _, annotation in pairs(core.annotations) do
     table.insert(annotation_list, annotation)
-  end
-
-  table.sort(annotation_list, function(a, b)
-    return a.id > b.id
-  end)
-
-  for _, annotation in ipairs(annotation_list) do
-    table.insert(core.undo_stack, annotation)
     render.clear_annotation_rendering(annotation)
   end
 
-  while #core.undo_stack > core.max_undo do
+  table.insert(core.undo_stack, annotation_list)
+  if #core.undo_stack > core.max_undo then
     table.remove(core.undo_stack, 1)
   end
 
@@ -169,18 +162,27 @@ function M.undo_delete()
     return
   end
 
-  local annotation = table.remove(core.undo_stack)
+  local entry = table.remove(core.undo_stack)
 
-  table.insert(core.redo_stack, annotation)
+  table.insert(core.redo_stack, entry)
   if #core.redo_stack > core.max_undo then
     table.remove(core.redo_stack, 1)
   end
 
-  core.annotations[annotation.id] = annotation
-  render.render_annotation(annotation)
+  for _, annotation in ipairs(entry) do
+    core.annotations[annotation.id] = annotation
+    render.render_annotation(annotation)
+  end
+
   persistence.save_to_disk()
   refresh_trouble_if_open()
-  vim.notify("Annotation restored (redo available)", vim.log.levels.INFO)
+
+  local count = #entry
+  if count == 1 then
+    vim.notify("Annotation restored", vim.log.levels.INFO)
+  else
+    vim.notify(string.format("%d annotations restored", count), vim.log.levels.INFO)
+  end
 end
 
 ---Redo last undo
@@ -190,18 +192,27 @@ function M.redo_delete()
     return
   end
 
-  local annotation = table.remove(core.redo_stack)
+  local entry = table.remove(core.redo_stack)
 
-  table.insert(core.undo_stack, annotation)
+  table.insert(core.undo_stack, entry)
   if #core.undo_stack > core.max_undo then
     table.remove(core.undo_stack, 1)
   end
 
-  render.clear_annotation_rendering(annotation)
-  core.annotations[annotation.id] = nil
+  for _, annotation in ipairs(entry) do
+    render.clear_annotation_rendering(annotation)
+    core.annotations[annotation.id] = nil
+  end
+
   persistence.save_to_disk()
   refresh_trouble_if_open()
-  vim.notify("Annotation re-deleted (undo available)", vim.log.levels.INFO)
+
+  local count = #entry
+  if count == 1 then
+    vim.notify("Annotation re-deleted", vim.log.levels.INFO)
+  else
+    vim.notify(string.format("%d annotations re-deleted", count), vim.log.levels.INFO)
+  end
 end
 
 ---Copy all annotations to clipboard
