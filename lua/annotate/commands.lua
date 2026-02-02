@@ -22,6 +22,8 @@ function M.setup()
       api.edit_under_cursor()
     elseif subcmd == "yank" or subcmd == "copy" then
       api.yank_all()
+    elseif subcmd == "cut" then
+      api.yank_and_delete_all()
     elseif subcmd == "write" or subcmd == "export" then
       api.write_to_file()
     elseif subcmd == "import" or subcmd == "load" then
@@ -46,6 +48,7 @@ Annotate commands:
   :Annotate delete    - Delete annotation under cursor
   :Annotate edit      - Edit annotation under cursor
   :Annotate yank      - Copy all annotations to clipboard
+  :Annotate cut       - Copy all annotations and delete them
   :Annotate write     - Export to markdown file
   :Annotate import    - Import from markdown file
   :Annotate undo      - Undo last delete
@@ -71,6 +74,7 @@ Visual mode: Select lines and use <leader>ra to add annotation
         "delete",
         "edit",
         "yank",
+        "cut",
         "write",
         "import",
         "undo",

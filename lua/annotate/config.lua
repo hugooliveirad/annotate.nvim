@@ -12,6 +12,7 @@
 ---@field list string|false Normal mode: open list
 ---@field telescope string|false Normal mode: telescope picker
 ---@field yank string|false Normal mode: yank all annotations
+---@field yank_delete string|false Normal mode: yank all and delete
 ---@field delete string|false Normal mode: delete under cursor
 ---@field edit string|false Normal mode: edit under cursor
 ---@field delete_all string|false Normal mode: delete all
@@ -50,6 +51,7 @@ local defaults = {
     list = "<leader>al",
     telescope = "<leader>as",
     yank = "<leader>ay",
+    yank_delete = "<leader>aY",
     delete = "<leader>ad",
     edit = "<leader>ae",
     delete_all = "<leader>aD",
@@ -134,6 +136,10 @@ function M.setup_keymaps()
 
   if km.yank then
     vim.keymap.set("n", km.yank, api.yank_all, { desc = "[A]nnotate: [Y]ank all annotations" })
+  end
+
+  if km.yank_delete then
+    vim.keymap.set("n", km.yank_delete, api.yank_and_delete_all, { desc = "[A]nnotate: [Y]ank all and delete" })
   end
 
   if km.delete then

@@ -215,6 +215,17 @@ function M.redo_delete()
   end
 end
 
+---Copy all annotations to clipboard and delete them
+function M.yank_and_delete_all()
+  if vim.tbl_isempty(core.annotations) then
+    vim.notify("No annotations to cut", vim.log.levels.WARN)
+    return
+  end
+
+  M.yank_all()
+  M.delete_all()
+end
+
 ---Copy all annotations to clipboard
 function M.yank_all()
   local grouped = {} ---@type table<string, Annotation[]>
